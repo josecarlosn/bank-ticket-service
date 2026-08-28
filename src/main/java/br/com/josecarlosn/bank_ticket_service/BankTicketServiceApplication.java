@@ -8,7 +8,7 @@ public class BankTicketServiceApplication {
 
 	public static void main(String[] args) {
 		SpringApplication.run(BankTicketServiceApplication.class, args);
-		System.out.print("Server running");
+		System.out.print("--------------------------| SERVER ONLINE |---------------------------");
 	}
 
 

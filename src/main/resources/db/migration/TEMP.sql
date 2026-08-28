@@ -1,0 +1,29 @@
+-- CREATE TABLE departments(
+--     id INTEGER GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
+--     name VARCHAR(100) UNIQUE NOT NULL,
+--     tag VARCHAR(5) UNIQUE NOT NULL,
+--     priority_tag VARCHAR(5) UNIQUE NOT NULL
+-- );
+-- CREATE TABLE desks(
+--     id INTEGER GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
+--     department_id INTEGER NOT NULL REFERENCES departments(id),
+--     number INTEGER NOT NULL,
+--     UNIQUE(department_id, number)
+-- );
+-- CREATE TABLE ticket_counts(
+--     department_id INTEGER NOT NULL REFERENCES departments(id),
+--     have_priority BOOLEAN NOT NULL,
+--     date DATE NOT NULL,
+--     last_number INTEGER NOT NULL DEFAULT(1),
+--     PRIMARY KEY (department_id, have_priority, date)
+-- );
+-- CREATE TABLE tickets(
+--     id BIGINT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
+--     department_id INT NOT NULL REFERENCES departments(id),
+--     desk_id INT REFERENCES desks(id),
+--     have_priority BOOLEAN NOT NULL DEFAULT(FALSE),
+--     created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+--     called_at TIMESTAMP,
+--     finished_at TIMESTAMP,
+--     was_canceled BOOLEAN NOT NULL DEFAULT(FALSE)
+-- );
