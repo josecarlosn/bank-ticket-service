@@ -13,9 +13,8 @@ import lombok.Setter;
 @Table(name = "departments")
 @Entity
 @Getter
-//@Setter
-//@NoArgsConstructor
-//@AllArgsConstructor
+@NoArgsConstructor
+@AllArgsConstructor
 public class Department {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
