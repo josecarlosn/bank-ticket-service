@@ -18,9 +18,11 @@ import lombok.Setter;
 public class Department {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id")
     private Integer id;
 
     @NotNull
     @Size(max = 100)
+    @Column(name = "name", nullable = false, length = 100)
     private String name;
 }
