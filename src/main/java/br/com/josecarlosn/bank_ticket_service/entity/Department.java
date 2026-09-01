@@ -1,6 +1,5 @@
 package br.com.josecarlosn.bank_ticket_service.entity;
 
-
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
