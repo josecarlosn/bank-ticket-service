@@ -33,5 +33,5 @@ public class Department {
     @NotNull
     @Size(max = 5)
     @Column(name = "priority_tag", unique = true)
-    private String priority_tag;
+    private String priorityTag;
 }
