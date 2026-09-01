@@ -24,4 +24,14 @@ public class Department {
     @Size(max = 100)
     @Column(name = "name", nullable = false, length = 100)
     private String name;
+
+    @NotNull
+    @Size(max = 5)
+    @Column(name = "tag", unique = true)
+    private String tag;
+
+    @NotNull
+    @Size(max = 5)
+    @Column(name = "priority_tag", unique = true)
+    private String priority_tag;
 }
