@@ -1,7 +1,7 @@
 package br.com.josecarlosn.bank_ticket_service.controller;
 
-import br.com.josecarlosn.bank_ticket_service.repository.DepartmentRepository;
 import br.com.josecarlosn.bank_ticket_service.DTO.response.DepartmentResponseDTO;
+import br.com.josecarlosn.bank_ticket_service.service.DepartmentService;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -11,15 +11,11 @@ import java.util.List;
 @RestController
 @RequestMapping("department")
 public class DepartmentController {
-//    @Autowired
-//    DepartmentRepository repository;
-    private final DepartmentRepository repository;
-    public DepartmentController(DepartmentRepository repository){
-        this.repository = repository;
-    }
+    private final DepartmentService service;
+    public DepartmentController(DepartmentService service){this.service = service;}
 
     @GetMapping
-    public List<DepartmentResponseDTO> listAll() {
-        return repository.findAll().stream().map(DepartmentResponseDTO::new).toList();
-    };
+    public List<DepartmentResponseDTO> listDepartments(){
+        return service.list();
+    }
 }
