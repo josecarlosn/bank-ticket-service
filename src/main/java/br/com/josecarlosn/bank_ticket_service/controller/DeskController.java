@@ -1,8 +1,6 @@
 package br.com.josecarlosn.bank_ticket_service.controller;
 
-import br.com.josecarlosn.bank_ticket_service.DTO.response.DeskResponseDTO;
-import br.com.josecarlosn.bank_ticket_service.entity.Desk;
-import br.com.josecarlosn.bank_ticket_service.repository.DeskRepository;
+import br.com.josecarlosn.bank_ticket_service.dto.response.DeskResponseDTO;
 import br.com.josecarlosn.bank_ticket_service.service.DeskService;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;

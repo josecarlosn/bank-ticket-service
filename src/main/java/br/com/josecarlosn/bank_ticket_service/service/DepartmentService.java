@@ -1,10 +1,12 @@
 package br.com.josecarlosn.bank_ticket_service.service;
 
-import br.com.josecarlosn.bank_ticket_service.DTO.response.DepartmentResponseDTO;
+import br.com.josecarlosn.bank_ticket_service.dto.response.DepartmentResponseDTO;
 import br.com.josecarlosn.bank_ticket_service.entity.Department;
+import br.com.josecarlosn.bank_ticket_service.exceptions.InvalidDepartmentException;
 import br.com.josecarlosn.bank_ticket_service.repository.DepartmentRepository;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.RequestBody;
 
 import java.util.List;
 
@@ -16,6 +18,15 @@ public class DepartmentService {
     public List<DepartmentResponseDTO> list(){
         Sort sort = Sort.by(Sort.Direction.ASC, "name");
         return repository.findAll(sort).stream().map(DepartmentResponseDTO::new).toList();
+    }
+
+    public List<DepartmentResponseDTO> create(@RequestBody Department department){
+        if(repository.existsByName(department.getName())){throw new InvalidDepartmentException("Department's name already exists!");}
+        if(repository.existsByTag(department.getTag())){throw new InvalidDepartmentException("Department's tag already exists!");}
+        if(repository.existsByPriorityTag(department.getPriorityTag())){throw new InvalidDepartmentException("Department's priority tag already exists!");}
+
+        repository.save(department);
+        return list();
     }
 
 

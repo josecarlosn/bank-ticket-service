@@ -1,10 +1,11 @@
 package br.com.josecarlosn.bank_ticket_service.controller;
 
-import br.com.josecarlosn.bank_ticket_service.DTO.response.DepartmentResponseDTO;
+import br.com.josecarlosn.bank_ticket_service.dto.request.DepartmentRequestDTO;
+import br.com.josecarlosn.bank_ticket_service.dto.response.DepartmentResponseDTO;
+import br.com.josecarlosn.bank_ticket_service.entity.Department;
 import br.com.josecarlosn.bank_ticket_service.service.DepartmentService;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import jakarta.validation.Valid;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -17,5 +18,12 @@ public class DepartmentController {
     @GetMapping
     public List<DepartmentResponseDTO> listDepartments(){
         return service.list();
+    }
+
+    @PostMapping
+    public List<DepartmentResponseDTO> createDepartment(@Valid @RequestBody DepartmentRequestDTO dto){
+        Department department = new Department(dto);
+        service.create(department);
+        return listDepartments();
     }
 }

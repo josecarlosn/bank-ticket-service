@@ -1,6 +1,6 @@
 package br.com.josecarlosn.bank_ticket_service.service;
 
-import br.com.josecarlosn.bank_ticket_service.DTO.response.DeskResponseDTO;
+import br.com.josecarlosn.bank_ticket_service.dto.response.DeskResponseDTO;
 import br.com.josecarlosn.bank_ticket_service.repository.DeskRepository;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;

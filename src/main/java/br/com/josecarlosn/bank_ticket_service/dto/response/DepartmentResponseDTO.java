@@ -1,4 +1,4 @@
-package br.com.josecarlosn.bank_ticket_service.DTO.response;
+package br.com.josecarlosn.bank_ticket_service.dto.response;
 
 import br.com.josecarlosn.bank_ticket_service.entity.Department;
 
