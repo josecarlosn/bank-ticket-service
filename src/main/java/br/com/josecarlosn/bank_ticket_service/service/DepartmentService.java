@@ -15,18 +15,18 @@ public class DepartmentService {
     private final DepartmentRepository repository;
     public DepartmentService(DepartmentRepository repository){this.repository = repository;}
 
-    public List<DepartmentResponseDTO> list(){
+    public List<DepartmentResponseDTO> listDepartment(){
         Sort sort = Sort.by(Sort.Direction.ASC, "name");
         return repository.findAll(sort).stream().map(DepartmentResponseDTO::new).toList();
     }
 
-    public List<DepartmentResponseDTO> create(@RequestBody Department department){
+    public List<DepartmentResponseDTO> create(Department department){
         if(repository.existsByName(department.getName())){throw new InvalidDepartmentException("Department's name already exists!");}
         if(repository.existsByTag(department.getTag())){throw new InvalidDepartmentException("Department's tag already exists!");}
         if(repository.existsByPriorityTag(department.getPriorityTag())){throw new InvalidDepartmentException("Department's priority tag already exists!");}
 
         repository.save(department);
-        return list();
+        return listDepartment();
     }
 
 

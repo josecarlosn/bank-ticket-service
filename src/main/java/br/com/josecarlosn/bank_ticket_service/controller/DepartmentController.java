@@ -5,6 +5,7 @@ import br.com.josecarlosn.bank_ticket_service.dto.response.DepartmentResponseDTO
 import br.com.josecarlosn.bank_ticket_service.entity.Department;
 import br.com.josecarlosn.bank_ticket_service.service.DepartmentService;
 import jakarta.validation.Valid;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -17,13 +18,13 @@ public class DepartmentController {
 
     @GetMapping
     public List<DepartmentResponseDTO> listDepartments(){
-        return service.list();
+        return service.listDepartment();
     }
 
     @PostMapping
-    public List<DepartmentResponseDTO> createDepartment(@Valid @RequestBody DepartmentRequestDTO dto){
+    public ResponseEntity<?> createDepartment(@Valid @RequestBody DepartmentRequestDTO dto){
         Department department = new Department(dto);
         service.create(department);
-        return listDepartments();
+        return ResponseEntity.ok("Department created successfully");
     }
 }

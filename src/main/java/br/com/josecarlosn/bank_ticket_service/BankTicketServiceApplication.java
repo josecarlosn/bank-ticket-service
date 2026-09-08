@@ -8,7 +8,7 @@ public class BankTicketServiceApplication {
 
 	public static void main(String[] args) {
 		SpringApplication.run(BankTicketServiceApplication.class, args);
-		System.out.println("""
+		System.out.print("""
 		 ███████╗███████╗██████╗ ██╗   ██╗███████╗██████╗
 		 ██╔════╝██╔════╝██╔══██╗██║   ██║██╔════╝██╔══██╗
 		 ███████╗█████╗  ██████╔╝██║   ██║█████╗  ██████╔╝

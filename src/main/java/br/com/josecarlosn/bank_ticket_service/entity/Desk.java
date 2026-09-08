@@ -1,5 +1,6 @@
 package br.com.josecarlosn.bank_ticket_service.entity;
 
+import br.com.josecarlosn.bank_ticket_service.dto.request.DeskRequestDTO;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
@@ -22,4 +23,10 @@ public class Desk {
 
     @NotNull
     private Integer number;
+
+    public Desk(DeskRequestDTO body){
+        this.department = body.department();
+        this.number = body.number();
+    }
+
 }
