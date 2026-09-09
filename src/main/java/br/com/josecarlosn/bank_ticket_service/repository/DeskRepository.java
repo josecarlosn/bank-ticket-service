@@ -5,5 +5,5 @@ import br.com.josecarlosn.bank_ticket_service.entity.Desk;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface DeskRepository extends JpaRepository<Desk, Integer> {
-    boolean existsByDepartmentAndNumber(Department department, Integer number);
+    boolean existsByDepartmentAndNumber(Integer departmentId, Integer number);
 }

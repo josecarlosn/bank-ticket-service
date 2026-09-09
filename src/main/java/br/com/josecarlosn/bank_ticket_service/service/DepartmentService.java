@@ -1,5 +1,6 @@
 package br.com.josecarlosn.bank_ticket_service.service;
 
+import br.com.josecarlosn.bank_ticket_service.dto.request.DepartmentRequestDTO;
 import br.com.josecarlosn.bank_ticket_service.dto.response.DepartmentResponseDTO;
 import br.com.josecarlosn.bank_ticket_service.entity.Department;
 import br.com.josecarlosn.bank_ticket_service.exceptions.InvalidDepartmentException;
@@ -20,10 +21,13 @@ public class DepartmentService {
         return repository.findAll(sort).stream().map(DepartmentResponseDTO::new).toList();
     }
 
-    public List<DepartmentResponseDTO> create(Department department){
-        if(repository.existsByName(department.getName())){throw new InvalidDepartmentException("Department's name already exists!");}
-        if(repository.existsByTag(department.getTag())){throw new InvalidDepartmentException("Department's tag already exists!");}
-        if(repository.existsByPriorityTag(department.getPriorityTag())){throw new InvalidDepartmentException("Department's priority tag already exists!");}
+    public List<DepartmentResponseDTO> create(DepartmentRequestDTO dto){
+        if(repository.existsByName(dto.name())){throw new InvalidDepartmentException("Department's name already exists!");}
+        if(repository.existsByTag(dto.tag())){throw new InvalidDepartmentException("Department's tag already exists!");}
+        if(repository.existsByPriorityTag(dto.priorityTag())){throw new InvalidDepartmentException("Department's priority tag already exists!");}
+
+        Department department = new Department(dto);
+
 
         repository.save(department);
         return listDepartment();

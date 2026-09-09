@@ -5,8 +5,8 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 
 public record DeskRequestDTO(
-        @NotNull
-        Department department,
-        @NotNull
+        @NotNull(message = "Department ID can't be null! ")
+        Integer departmentId,
+        @NotNull(message = "Number field can't be null!")
         Integer number
 ) {}

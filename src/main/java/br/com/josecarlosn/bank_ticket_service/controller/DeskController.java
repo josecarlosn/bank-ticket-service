@@ -24,9 +24,8 @@ public class DeskController {
 
     @PostMapping
     public ResponseEntity<?> create(@Valid @RequestBody DeskRequestDTO dto){
-        Desk desk = new Desk(dto);
-        service.create(desk);
-        return ResponseEntity.ok("Desk created! ");
+        service.create(dto);
+        return ResponseEntity.ok("Desk created!");
     }
 
 }

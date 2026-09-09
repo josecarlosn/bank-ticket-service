@@ -6,10 +6,12 @@ import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 @Table(name = "desks", uniqueConstraints = @UniqueConstraint(name = "uk_department_number", columnNames = {"department_id", "number"}))
 @Entity
 @Getter
+@Setter
 @AllArgsConstructor
 @NoArgsConstructor
 public class Desk {
@@ -24,9 +26,5 @@ public class Desk {
     @NotNull
     private Integer number;
 
-    public Desk(DeskRequestDTO body){
-        this.department = body.department();
-        this.number = body.number();
-    }
 
 }
