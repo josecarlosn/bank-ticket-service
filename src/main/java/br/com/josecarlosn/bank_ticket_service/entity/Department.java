@@ -6,11 +6,13 @@ import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 
 @Table(name = "departments")
 @Entity
 @Getter
+@Setter
 @NoArgsConstructor
 @AllArgsConstructor
 public class Department {
@@ -30,11 +32,10 @@ public class Department {
     @Size(max = 5)
     @Column(name = "priority_tag", unique = true, nullable = false)
     private String priorityTag;
-
-
-    public Department(DepartmentRequestDTO body){
-        this.name = body.name();
-        this.tag = body.tag();
-        this.priorityTag = body.priorityTag();
+    //Construtor responsável por transformar o RequestDTO na entidade.
+    public Department(String name, String tag, String priorityTag){
+        this.name = name;
+        this.tag = tag;
+        this.priorityTag = priorityTag;
     }
 }

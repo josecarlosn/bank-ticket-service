@@ -26,7 +26,8 @@ public class DepartmentService {
         if(repository.existsByTag(dto.tag())){throw new InvalidDepartmentException("Department's tag already exists!");}
         if(repository.existsByPriorityTag(dto.priorityTag())){throw new InvalidDepartmentException("Department's priority tag already exists!");}
 
-        Department department = new Department(dto);
+        Department department = new Department(dto.name(), dto.tag(), dto.priorityTag());
+
 
 
         repository.save(department);

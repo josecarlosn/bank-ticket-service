@@ -26,5 +26,8 @@ public class Desk {
     @NotNull
     private Integer number;
 
-
+    public Desk(Department department, Integer number){
+        this.department = department;
+        this.number = number;
+    }
 }

@@ -5,7 +5,6 @@ import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 
 public record DepartmentRequestDTO(
-
         @NotNull @Size(max = 100, message = "Name field can't have more than 100 characters!") @NotBlank(message = "Name field can't be empty!")
         String name,
         @NotNull @Size(max = 5, message = "Tag field can't have more than 5 characters!") @NotBlank(message = "Tag field can't be empty!")

@@ -28,14 +28,16 @@ public class DeskService {
     }
 
     public List<DeskResponseDTO> create(DeskRequestDTO dto){
-        if(deskRepository.existsByDepartmentAndNumber(dto.departmentId(), dto.number())){
-            throw new InvalidDeskException("Desk already exists");
+        if(deskRepository.existsByDepartmentIdAndNumber(dto.departmentId(), dto.number())){
+            throw new InvalidDeskException("Desk already exists.");
         }
+        if (!departmentRepository.existsById(dto.departmentId())){
+            throw new InvalidDeskException("Department not found.");
+        }
+
         Department department = departmentRepository.findById(dto.departmentId())
-                .orElseThrow(() -> (new RuntimeException("Department not found!")));
-        Desk desk = new Desk();
-        desk.setDepartment(department);
-        desk.setNumber(dto.number());
+                .orElseThrow(() -> (new RuntimeException("Department not found.")));
+        Desk desk = new Desk(department, dto.number());
         deskRepository.save(desk);
         return list();
     }
