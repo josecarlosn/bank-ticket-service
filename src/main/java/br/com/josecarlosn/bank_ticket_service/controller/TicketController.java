@@ -15,7 +15,7 @@ public class TicketController {
     public TicketController(TicketService service){this.service = service;}
 
     @GetMapping
-    public List<TicketResponseDTO> listAll(){
+    public List<TicketResponseDTO> list(){
       return service.list();
     };
 

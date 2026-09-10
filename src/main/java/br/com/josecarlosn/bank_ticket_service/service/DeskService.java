@@ -5,13 +5,10 @@ import br.com.josecarlosn.bank_ticket_service.dto.response.DeskResponseDTO;
 import br.com.josecarlosn.bank_ticket_service.entity.Department;
 import br.com.josecarlosn.bank_ticket_service.entity.Desk;
 import br.com.josecarlosn.bank_ticket_service.exceptions.InvalidDeskException;
-import br.com.josecarlosn.bank_ticket_service.infra.RestExceptionMessage;
 import br.com.josecarlosn.bank_ticket_service.repository.DepartmentRepository;
 import br.com.josecarlosn.bank_ticket_service.repository.DeskRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Sort;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
