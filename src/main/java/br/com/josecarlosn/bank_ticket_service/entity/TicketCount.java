@@ -24,5 +24,11 @@ public class TicketCount {
     @Column(name = "date", nullable = false)
     private LocalDate date;
     @Column(name = "last_number", nullable = false)
-    private Integer lastNumber;
+    private Integer lastNumber = 1;
+
+    public TicketCount(Integer departmentId, boolean havePriority, LocalDate date){
+        this.departmentId = departmentId;
+        this.havePriority = havePriority;
+        this.date = date;
+    }
 }

@@ -1,5 +1,6 @@
 package br.com.josecarlosn.bank_ticket_service.infra;
 
+import br.com.josecarlosn.bank_ticket_service.exceptions.TicketCountException;
 import br.com.josecarlosn.bank_ticket_service.exceptions.InvalidDepartmentException;
 import br.com.josecarlosn.bank_ticket_service.exceptions.InvalidDeskException;
 import org.springframework.http.HttpStatus;
@@ -15,9 +16,12 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler {
     public ResponseEntity<RestExceptionMessage> departmentHandle(InvalidDepartmentException exception){
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new RestExceptionMessage(HttpStatus.CONFLICT, exception.getMessage()));
     }
-
     @ExceptionHandler(InvalidDeskException.class)
     public ResponseEntity<RestExceptionMessage> deskHandle(InvalidDeskException exception){
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new RestExceptionMessage(HttpStatus.BAD_REQUEST, exception.getMessage()));
+    }
+    @ExceptionHandler(TicketCountException.class)
+    public ResponseEntity<RestExceptionMessage> ticketCountHandle(TicketCountException exception){
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new RestExceptionMessage(HttpStatus.BAD_REQUEST, exception.getMessage()));
     }
 }

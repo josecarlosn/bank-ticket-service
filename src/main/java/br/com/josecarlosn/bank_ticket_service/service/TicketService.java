@@ -2,6 +2,7 @@ package br.com.josecarlosn.bank_ticket_service.service;
 
 import br.com.josecarlosn.bank_ticket_service.dto.response.TicketResponseDTO;
 import br.com.josecarlosn.bank_ticket_service.repository.TicketRepository;
+import jakarta.transaction.Transactional;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
@@ -16,4 +17,6 @@ public class TicketService {
         Sort sort = Sort.by(Sort.Direction.ASC, "createdAt");
         return repository.findAll(sort).stream().map(TicketResponseDTO::new).toList();
     }
+
+
 }
