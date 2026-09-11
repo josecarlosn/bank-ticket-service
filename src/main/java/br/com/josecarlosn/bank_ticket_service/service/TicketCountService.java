@@ -37,11 +37,17 @@ public class TicketCountService {
         if(!departmentRepository.existsById(dto.departmentId())){
            throw new TicketCountException("Department doesn't exist.");
         }
-        if(ticketCountRepository.existsByDepartmentIdAndHavePriorityAndDate(dto.departmentId(),dto.havePriority(),dto.date())){
-            throw new TicketCountException("TicketCount already exists.");
+
+        boolean ticketCountExists = ticketCountRepository.existsByDepartmentIdAndHavePriorityAndDate(dto.departmentId(),dto.havePriority(),dto.date());
+        Optional<TicketCount> tc = ticketCountRepository.findByDepartmentIdAndHavePriorityAndDate(dto.departmentId(),dto.havePriority(),dto.date());
+        if(tc.isPresent()){
+            TicketCount updatedTicketCount = tc.get();
+            updatedTicketCount.setLastNumber(updatedTicketCount.getLastNumber()+1);
+            return ticketCountRepository.save(updatedTicketCount);
+        }else{
+            TicketCount ticketCount = new TicketCount(dto.departmentId(), dto.havePriority(), dto.date());
+            return ticketCountRepository.save(ticketCount);
         }
-        TicketCount ticketCount = new TicketCount(dto.departmentId(), dto.havePriority(), dto.date());
-        return  ticketCountRepository.save(ticketCount);
     }
 
     public Integer nextTicketNumber(TicketRequestDTO dto){

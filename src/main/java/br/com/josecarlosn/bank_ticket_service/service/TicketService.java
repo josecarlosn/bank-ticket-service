@@ -32,15 +32,24 @@ public class TicketService {
     }
     @Transactional
     public List<TicketResponseDTO> generateTicket(TicketRequestDTO dto){
-//        int nextNumber = ticketCountService.nextTicketNumber(dto);
+        int nextNumber = ticketCountService.nextTicketNumber(dto);
         Department department = departmentRepository.findById(dto.departmentId()).orElseThrow(() -> new TicketException("DepartmentId not found"));
         LocalDateTime today = LocalDateTime.now();
         TicketCountRequestDTO tcRequestDTO = new TicketCountRequestDTO(dto.departmentId(), dto.havePriority(), today.toLocalDate());
+
         ticketCountService.create(tcRequestDTO);
-        Ticket ticket = new Ticket(department, dto.havePriority(), today);
+
+        Ticket ticket = new Ticket(department, dto.havePriority(),nextNumber, today);
         ticketRepository.save(ticket);
+        buildTicketCode(ticket);
         return list();
     }
+
+    public String buildTicketCode(Ticket ticket){
+        String tag = ticket.isHavePriority() ? ticket.getDepartment().getPriorityTag() : ticket.getDepartment().getTag();
+        return tag + ticket.getNumber();
+    }
+
 
 
 }

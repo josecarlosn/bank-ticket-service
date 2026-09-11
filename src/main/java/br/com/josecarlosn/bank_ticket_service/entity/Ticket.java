@@ -19,7 +19,7 @@ public class Ticket {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @NotNull
+    @Column(name = "number", nullable = false)
     private int number;
 
     @ManyToOne(fetch = FetchType.LAZY)
@@ -46,9 +46,10 @@ public class Ticket {
     @Column(name = "was_canceled", nullable = false)
     private boolean wasCanceled;
 
-    public Ticket(Department department, boolean havePriority, LocalDateTime createdAt){
+    public Ticket(Department department, boolean havePriority, int number, LocalDateTime createdAt){
         this.department = department;
         this.havePriority = havePriority;
+        this.number = number;
         this.createdAt = createdAt;
     }
 }
