@@ -46,5 +46,9 @@ public class Ticket {
     @Column(name = "was_canceled", nullable = false)
     private boolean wasCanceled;
 
-
+    public Ticket(Department department, boolean havePriority, LocalDateTime createdAt){
+        this.department = department;
+        this.havePriority = havePriority;
+        this.createdAt = createdAt;
+    }
 }

@@ -9,10 +9,7 @@ import java.util.Optional;
 
 public interface TicketCountRepository extends JpaRepository<TicketCount, Integer> {
     boolean existsByDepartmentIdAndHavePriorityAndDate(Integer departmentId, boolean havePriority, LocalDate date);
-    Optional<TicketCount> findAllByDepartmentIdAndHavePriorityAndDate(Integer departmentId, boolean havePriority, LocalDate date);
-
-    Example<? extends TicketCount> date(LocalDate date);
-
+    Optional<TicketCount> findByDepartmentIdAndHavePriorityAndDate(Integer departmentId, boolean havePriority, LocalDate date);
     boolean findByDate(LocalDate date);
 }
 
