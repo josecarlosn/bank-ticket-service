@@ -53,7 +53,7 @@ public class Ticket {
         this.createdAt = createdAt;
     }
 
-    public void call(Desk desk){
+    public void call(Long id, Desk desk){
         if ( calledAt != null || wasCanceled ){
             throw new TicketException("Cannot call a ticket that has already been called or canceled.");
         }
