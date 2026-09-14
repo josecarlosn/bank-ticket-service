@@ -43,7 +43,8 @@ public class TicketService {
     }
     public void buildTicketCode(Ticket ticket){
         String tag = ticket.isHavePriority() ? ticket.getDepartment().getPriorityTag() : ticket.getDepartment().getTag();
-        ticket.setCode(tag + ticket.getNumber());
+        String formattedNumber = String.format("%03d", ticket.getNumber());
+        ticket.setCode(tag + formattedNumber);
     }
 
 
