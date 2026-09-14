@@ -26,9 +26,7 @@ public class TicketController {
         return service.generateTicket(dto);
     }
     @PostMapping("call/{id}")
-    public ResponseEntity<?> call(@PathVariable Long id, @RequestBody TicketActionRequestDTO dto){
-
-        return ResponseEntity.ok(service.call(id, dto));
+    public ResponseEntity<?> call(@PathVariable Long id, @RequestBody int deskId){
+        return ResponseEntity.ok(service.call(id, deskId));
     }
-
 }

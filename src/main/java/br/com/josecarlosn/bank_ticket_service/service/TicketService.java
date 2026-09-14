@@ -52,9 +52,9 @@ public class TicketService {
         ticket.setCode(tag + formattedNumber);
     }
     @Transactional
-    public TicketActionResponseDTO call(Long id, TicketActionRequestDTO dto){
+    public TicketActionResponseDTO call(Long id, int deskId){
         Ticket ticket = ticketRepository.findById(id).orElseThrow(() -> new TicketException("Ticket id not found."));
-        Desk desk = deskRepository.findById(dto.deskId()).orElseThrow(() -> new TicketException("Desk not found."));
+        Desk desk = deskRepository.findById(deskId).orElseThrow(() -> new TicketException("Desk not found."));
 
         ticket.call(ticket.getId(), desk);
         ticketRepository.save(ticket);
