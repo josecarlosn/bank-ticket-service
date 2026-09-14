@@ -9,9 +9,7 @@ import br.com.josecarlosn.bank_ticket_service.exceptions.TicketCountException;
 import br.com.josecarlosn.bank_ticket_service.repository.DepartmentRepository;
 import br.com.josecarlosn.bank_ticket_service.repository.TicketCountRepository;
 import lombok.RequiredArgsConstructor;
-import org.springframework.cglib.core.Local;
 import org.springframework.data.domain.Sort;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
@@ -23,12 +21,10 @@ import java.util.Optional;
 public class TicketCountService {
     private final TicketCountRepository ticketCountRepository;
     private final DepartmentRepository departmentRepository;
-
     public List<TicketCountResponseDTO> list(){
         Sort sort = Sort.by(Sort.Direction.ASC, "Date").and(Sort.by(Sort.Direction.ASC,"departmentId"));
         return ticketCountRepository.findAll(sort).stream().map(TicketCountResponseDTO::new).toList();
     }
-
     public TicketCount create(TicketCountRequestDTO dto){
         LocalDate today = LocalDate.now();
         if(dto.date().isAfter(today)){
@@ -37,8 +33,6 @@ public class TicketCountService {
         if(!departmentRepository.existsById(dto.departmentId())){
            throw new TicketCountException("Department doesn't exist.");
         }
-
-        boolean ticketCountExists = ticketCountRepository.existsByDepartmentIdAndHavePriorityAndDate(dto.departmentId(),dto.havePriority(),dto.date());
         Optional<TicketCount> tc = ticketCountRepository.findByDepartmentIdAndHavePriorityAndDate(dto.departmentId(),dto.havePriority(),dto.date());
         if(tc.isPresent()){
             TicketCount updatedTicketCount = tc.get();
@@ -49,12 +43,9 @@ public class TicketCountService {
             return ticketCountRepository.save(ticketCount);
         }
     }
-
     public Integer nextTicketNumber(TicketRequestDTO dto){
         LocalDate today = LocalDate.now();
         Optional<TicketCount> ticketCount = ticketCountRepository.findByDepartmentIdAndHavePriorityAndDate(dto.departmentId(), dto.havePriority(), today);
         return ticketCount.map(count -> {return count.getLastNumber() + 1;}).orElseGet(() -> {return 1;});
-
-
     }
 }

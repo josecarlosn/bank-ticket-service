@@ -11,7 +11,6 @@ import br.com.josecarlosn.bank_ticket_service.repository.TicketRepository;
 import org.springframework.transaction.annotation.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Sort;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -25,7 +24,6 @@ public class TicketService {
     private final DepartmentRepository departmentRepository;
     private final TicketCountService ticketCountService;
 
-
     public List<TicketResponseDTO> list(){
         Sort sort = Sort.by(Sort.Direction.ASC, "createdAt");
         return ticketRepository.findAll(sort).stream().map(TicketResponseDTO::new).toList();
@@ -36,18 +34,16 @@ public class TicketService {
         Department department = departmentRepository.findById(dto.departmentId()).orElseThrow(() -> new TicketException("DepartmentId not found"));
         LocalDateTime today = LocalDateTime.now();
         TicketCountRequestDTO tcRequestDTO = new TicketCountRequestDTO(dto.departmentId(), dto.havePriority(), today.toLocalDate());
-
         ticketCountService.create(tcRequestDTO);
-
         Ticket ticket = new Ticket(department, dto.havePriority(),nextNumber, today);
-        ticketRepository.save(ticket);
         buildTicketCode(ticket);
+        ticketRepository.save(ticket);
+
         return list();
     }
-
-    public String buildTicketCode(Ticket ticket){
+    public void buildTicketCode(Ticket ticket){
         String tag = ticket.isHavePriority() ? ticket.getDepartment().getPriorityTag() : ticket.getDepartment().getTag();
-        return tag + ticket.getNumber();
+        ticket.setCode(tag + ticket.getNumber());
     }
 
 

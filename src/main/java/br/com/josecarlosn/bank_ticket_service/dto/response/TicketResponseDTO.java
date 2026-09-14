@@ -7,7 +7,7 @@ import br.com.josecarlosn.bank_ticket_service.entity.Ticket;
 import java.time.LocalDateTime;
 
 public record TicketResponseDTO(
-        Department department,
+        String departmentName,
         Desk desk,
         boolean havePriority,
         int number,
@@ -19,7 +19,7 @@ public record TicketResponseDTO(
 
     public TicketResponseDTO(Ticket ticket){
         this(
-                ticket.getDepartment(),
+                ticket.getDepartment().getName(),
                 ticket.getDesk(),
                 ticket.isHavePriority(),
                 ticket.getNumber(),
