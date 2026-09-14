@@ -1,5 +1,6 @@
 package br.com.josecarlosn.bank_ticket_service.controller;
 
+import br.com.josecarlosn.bank_ticket_service.dto.request.DeskRequestDTO;
 import br.com.josecarlosn.bank_ticket_service.dto.request.TicketActionRequestDTO;
 import br.com.josecarlosn.bank_ticket_service.dto.request.TicketRequestDTO;
 import br.com.josecarlosn.bank_ticket_service.dto.response.TicketActionResponseDTO;
@@ -25,8 +26,18 @@ public class TicketController {
     public List<TicketResponseDTO> generateTicket(@RequestBody TicketRequestDTO dto){
         return service.generateTicket(dto);
     }
-    @PostMapping("call/{id}")
-    public ResponseEntity<?> call(@PathVariable Long id, @RequestBody int deskId){
-        return ResponseEntity.ok(service.call(id, deskId));
+    @PostMapping("/call/{id}")
+    public ResponseEntity<?> call(@PathVariable Long id, @RequestBody TicketActionRequestDTO dto){
+        return ResponseEntity.ok(service.call(id, dto));
+    }
+    @PostMapping("finish/{id}")
+    public ResponseEntity<?> finish(@PathVariable Long id){
+        service.finish(id);
+        return ResponseEntity.ok("Ticket finished.");
+    }
+    @PostMapping("cancel/{id}")
+    public ResponseEntity<?> cancel(@PathVariable Long id){
+        service.cancel(id);
+        return ResponseEntity.ok("Ticket canceled.");
     }
 }

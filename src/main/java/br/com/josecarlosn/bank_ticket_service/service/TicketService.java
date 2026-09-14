@@ -1,8 +1,10 @@
 package br.com.josecarlosn.bank_ticket_service.service;
 
+import br.com.josecarlosn.bank_ticket_service.dto.request.DeskRequestDTO;
 import br.com.josecarlosn.bank_ticket_service.dto.request.TicketActionRequestDTO;
 import br.com.josecarlosn.bank_ticket_service.dto.request.TicketCountRequestDTO;
 import br.com.josecarlosn.bank_ticket_service.dto.request.TicketRequestDTO;
+import br.com.josecarlosn.bank_ticket_service.dto.response.DeskResponseDTO;
 import br.com.josecarlosn.bank_ticket_service.dto.response.TicketActionResponseDTO;
 import br.com.josecarlosn.bank_ticket_service.dto.response.TicketResponseDTO;
 import br.com.josecarlosn.bank_ticket_service.entity.Department;
@@ -52,15 +54,26 @@ public class TicketService {
         ticket.setCode(tag + formattedNumber);
     }
     @Transactional
-    public TicketActionResponseDTO call(Long id, int deskId){
+    public TicketActionResponseDTO call(Long id, TicketActionRequestDTO dto){
         Ticket ticket = ticketRepository.findById(id).orElseThrow(() -> new TicketException("Ticket id not found."));
-        Desk desk = deskRepository.findById(deskId).orElseThrow(() -> new TicketException("Desk not found."));
+        Desk desk = deskRepository.findById(dto.deskId()).orElseThrow(() -> new TicketException("Desk not found."));
 
         ticket.call(ticket.getId(), desk);
         ticketRepository.save(ticket);
         return new TicketActionResponseDTO(ticket.getId(), ticket.getCode(), desk.getNumber());
-    };
-
+    }
+    @Transactional
+    public void finish(Long id){
+        Ticket ticket = ticketRepository.findById(id).orElseThrow(() -> new  TicketException("Ticket id not found."));
+        ticket.finish();
+        ticketRepository.save(ticket);
+    }
+    @Transactional
+    public void cancel(Long id){
+        Ticket ticket = ticketRepository.findById(id).orElseThrow(() -> new  TicketException("Ticket id not found."));
+        ticket.cancel();
+        ticketRepository.save(ticket);
+    }
 
 
 
