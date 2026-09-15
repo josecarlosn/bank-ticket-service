@@ -3,6 +3,7 @@ package br.com.josecarlosn.bank_ticket_service.controller;
 import br.com.josecarlosn.bank_ticket_service.dto.request.DeskRequestDTO;
 import br.com.josecarlosn.bank_ticket_service.dto.request.TicketActionRequestDTO;
 import br.com.josecarlosn.bank_ticket_service.dto.request.TicketRequestDTO;
+import br.com.josecarlosn.bank_ticket_service.dto.response.CustomerTicketPanelResponseDTO;
 import br.com.josecarlosn.bank_ticket_service.dto.response.TicketActionResponseDTO;
 import br.com.josecarlosn.bank_ticket_service.dto.response.TicketResponseDTO;
 import br.com.josecarlosn.bank_ticket_service.infra.RestExceptionMessage;
@@ -29,8 +30,8 @@ public class TicketController {
     }
     @PostMapping("call/{id}")
     public ResponseEntity<RestExceptionMessage> call(@PathVariable Long id, @RequestBody TicketActionRequestDTO dto){
-        TicketActionResponseDTO response = service.call(id, dto);
-        return ResponseEntity.status(HttpStatus.CREATED).body(new RestExceptionMessage(HttpStatus.CREATED, "Ticket created!"));
+        CustomerTicketPanelResponseDTO response = service.call(id, dto);
+        return ResponseEntity.status(HttpStatus.OK).body(new RestExceptionMessage(HttpStatus.OK, "Ticket called."));
     }
     @PostMapping("finish/{id}")
     public ResponseEntity<RestExceptionMessage> finish(@PathVariable Long id){

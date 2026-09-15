@@ -22,7 +22,7 @@ public record TicketResponseDTO(
                 ticket.getCode(),
                 ticket.getDepartment().getName(),
                 ticket.isHavePriority(),
-                ticket.getDesk() != null ? ticket.getDesk().getId() : null ,
+                ticket.getDesk() != null ? ticket.getDesk().getNumber() : null ,
                 ticket.getCreatedAt(),
                 ticket.getCalledAt(),
                 ticket.getFinishedAt(),
