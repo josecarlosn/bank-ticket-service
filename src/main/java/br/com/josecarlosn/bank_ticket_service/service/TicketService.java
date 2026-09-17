@@ -1,0 +1,97 @@
+package br.com.josecarlosn.bank_ticket_service.service;
+
+import br.com.josecarlosn.bank_ticket_service.dto.request.TicketActionRequestDTO;
+import br.com.josecarlosn.bank_ticket_service.dto.request.TicketCountRequestDTO;
+import br.com.josecarlosn.bank_ticket_service.dto.request.TicketRequestDTO;
+import br.com.josecarlosn.bank_ticket_service.dto.response.CustomerTicketPanelResponseDTO;
+import br.com.josecarlosn.bank_ticket_service.dto.response.InternalTicketPanelResponseDTO;
+import br.com.josecarlosn.bank_ticket_service.dto.response.TicketActionResponseDTO;
+import br.com.josecarlosn.bank_ticket_service.dto.response.TicketResponseDTO;
+import br.com.josecarlosn.bank_ticket_service.entity.Department;
+import br.com.josecarlosn.bank_ticket_service.entity.Desk;
+import br.com.josecarlosn.bank_ticket_service.entity.Ticket;
+import br.com.josecarlosn.bank_ticket_service.exceptions.TicketException;
+import br.com.josecarlosn.bank_ticket_service.repository.DepartmentRepository;
+import br.com.josecarlosn.bank_ticket_service.repository.DeskRepository;
+import br.com.josecarlosn.bank_ticket_service.repository.TicketRepository;
+import org.springframework.messaging.simp.SimpMessagingTemplate;
+import org.springframework.transaction.annotation.Transactional;
+import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Sort;
+import org.springframework.stereotype.Service;
+
+import java.time.LocalDateTime;
+import java.util.List;
+
+@Service
+@RequiredArgsConstructor
+public class TicketService {
+    private final TicketRepository ticketRepository;
+    private final DepartmentRepository departmentRepository;
+    private final TicketCountService ticketCountService;
+    private final DeskRepository deskRepository;
+    private final SimpMessagingTemplate messageTemplate;
+
+
+
+    public List<TicketResponseDTO> list(){
+        Sort sort = Sort.by(Sort.Direction.ASC, "createdAt");
+        return ticketRepository.findAll(sort).stream().map(TicketResponseDTO::new).toList();
+    }
+    @Transactional
+    public List<TicketResponseDTO> generateTicket(TicketRequestDTO dto){
+        int nextNumber = ticketCountService.nextTicketNumber(dto);
+        Department department = departmentRepository.findById(dto.departmentId()).orElseThrow(() -> new TicketException("DepartmentId not found"));
+        LocalDateTime today = LocalDateTime.now();
+        TicketCountRequestDTO tcRequestDTO = new TicketCountRequestDTO(dto.departmentId(), dto.havePriority(), today.toLocalDate());
+        ticketCountService.create(tcRequestDTO);
+        Ticket ticket = new Ticket(department, dto.havePriority(),nextNumber, today);
+        buildTicketCode(ticket);
+
+        ticketRepository.save(ticket);
+        InternalTicketPanelResponseDTO internalTicketResponse = new InternalTicketPanelResponseDTO(ticket);
+        messageTemplate.convertAndSend("/topic/ticket/internal/panel",internalTicketResponse);
+        return list();
+    }
+    public void buildTicketCode(Ticket ticket){
+        String tag = ticket.isHavePriority() ? ticket.getDepartment().getPriorityTag() : ticket.getDepartment().getTag();
+        String formattedNumber = String.format("%03d", ticket.getNumber());
+        ticket.setCode(tag + formattedNumber);
+    }
+    @Transactional
+    public CustomerTicketPanelResponseDTO call(Long id, TicketActionRequestDTO dto){
+        Ticket ticket = ticketRepository.findById(id).orElseThrow(() -> new TicketException("Ticket id not found."));
+        Desk desk = deskRepository.findById(dto.deskId()).orElseThrow(() -> new TicketException("Desk not found."));
+
+        ticket.call(ticket.getId(), desk);
+        ticketRepository.save(ticket);
+
+        CustomerTicketPanelResponseDTO customerTicketResponse = new CustomerTicketPanelResponseDTO(ticket);
+        messageTemplate.convertAndSend("/topic/ticket/customer/panel", customerTicketResponse);
+
+        return customerTicketResponse;
+    }
+    @Transactional
+    public void finish(Long id){
+        Ticket ticket = ticketRepository.findById(id).orElseThrow(() -> new TicketException("Ticket id not found."));
+        ticket.finish();
+        ticketRepository.save(ticket);
+
+        InternalTicketPanelResponseDTO internalTicketResponse = new InternalTicketPanelResponseDTO(ticket);
+        messageTemplate.convertAndSend("/topic/ticket/internal/panel", internalTicketResponse);
+    }
+
+    @Transactional
+    public void cancel(Long id){
+        Ticket ticket = ticketRepository.findById(id).orElseThrow(() -> new TicketException("Ticket id not found."));
+        ticket.cancel();
+        ticketRepository.save(ticket);
+
+        InternalTicketPanelResponseDTO internalTicketResponse = new InternalTicketPanelResponseDTO(ticket);
+        messageTemplate.convertAndSend("/topic/ticket/internal/panel", internalTicketResponse);
+    }
+
+
+
+
+}
