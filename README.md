@@ -3,8 +3,7 @@
 
 
  
-![Arquitetura do projeto](./docs/image.jpeg)
-
+![Arquitetura do projeto](https://github.com/josecarlosn/bank-ticket-service/blob/main/image.jpeg)
 API de gerenciamento de senhas de atendimento (estilo SAC) para agências bancárias, com filas por categoria, prioridade e atualização em tempo real via **WebSocket**.
  
 > Projeto de portfólio — modela um cenário real de fila bancária (Caixa/Atendimento, prioridade legal, múltiplos guichês).
