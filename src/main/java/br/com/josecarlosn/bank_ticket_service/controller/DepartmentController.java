@@ -20,8 +20,8 @@ public class DepartmentController {
     public DepartmentController(DepartmentService service){this.service = service;}
 
     @GetMapping
-    public List<DepartmentResponseDTO> listDepartments(){
-        return service.listDepartment();
+    public List<DepartmentResponseDTO> listActiveDepartments(){
+        return service.listActiveDepartment();
     }
 
     @PostMapping
@@ -29,6 +29,17 @@ public class DepartmentController {
         service.create(dto);
         return ResponseEntity.status(HttpStatus.CREATED).body(new RestExceptionMessage(HttpStatus.CREATED, "Department created"));
     }
+    @PostMapping("/activate/{id}")
+    public ResponseEntity<RestExceptionMessage> enable(@PathVariable Integer id){
+        service.activate(id);
+        return ResponseEntity.status(HttpStatus.OK).body(new RestExceptionMessage(HttpStatus.OK, "Department enabled."));
+    };
+    @PostMapping("/deactivate/{id}")
+    public ResponseEntity<RestExceptionMessage> disable(@PathVariable Integer id){
+        service.deactivate(id);
+        return ResponseEntity.status(HttpStatus.OK).body(new RestExceptionMessage(HttpStatus.OK, "Department disabled."));
+    };
+
     @DeleteMapping("/{id}")
     public ResponseEntity<RestExceptionMessage> deleteDepartment(@PathVariable Integer id){
         service.delete(id);

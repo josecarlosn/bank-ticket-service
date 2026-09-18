@@ -21,9 +21,9 @@ public class DepartmentService {
         this.deskRepository = deskRepository;
     }
 
-    public List<DepartmentResponseDTO> listDepartment(){
+    public List<DepartmentResponseDTO> listActiveDepartment(){
         Sort sort = Sort.by(Sort.Direction.ASC, "name");
-        return repository.findAll(sort).stream().map(DepartmentResponseDTO::new).toList();
+        return repository.findByIsActiveTrue(sort).stream().map(DepartmentResponseDTO::new).toList();
     }
 
     public List<DepartmentResponseDTO> create(DepartmentRequestDTO dto){
@@ -34,7 +34,7 @@ public class DepartmentService {
         Department department = new Department(dto.name(), dto.tag(), dto.priorityTag());
 
         repository.save(department);
-        return listDepartment();
+        return listActiveDepartment();
     }
     public void delete(Integer id){
         if(!repository.existsById(id)){
@@ -43,8 +43,18 @@ public class DepartmentService {
         if(deskRepository.existsByDepartmentId(id)){
             throw new InvalidDepartmentException("Cannot delete a department that has desks linked to it.");
         }
+
         repository.deleteById(id);
     }
-
+    public void activate(Integer id){
+        Department department = repository.findById(id).orElseThrow(() -> new InvalidDepartmentException("Department not found."));
+        department.activate();
+        repository.save(department);
+    }
+    public void deactivate(Integer id){
+        Department department = repository.findById(id).orElseThrow(() -> new InvalidDepartmentException("Department not found."));
+        department.deactivate();
+        repository.save(department);
+    }
 
 }
