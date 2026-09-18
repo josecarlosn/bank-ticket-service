@@ -25,12 +25,12 @@ public class DepartmentController {
     }
 
     @PostMapping
-    public ResponseEntity<?> createDepartment(@Valid @RequestBody DepartmentRequestDTO dto){
+    public ResponseEntity<RestExceptionMessage> createDepartment(@Valid @RequestBody DepartmentRequestDTO dto){
         service.create(dto);
         return ResponseEntity.status(HttpStatus.CREATED).body(new RestExceptionMessage(HttpStatus.CREATED, "Department created"));
     }
     @DeleteMapping("/{id}")
-    public ResponseEntity<?> deleteDepartment(@PathVariable Integer id){
+    public ResponseEntity<RestExceptionMessage> deleteDepartment(@PathVariable Integer id){
         service.delete(id);
         return ResponseEntity.status(HttpStatus.OK).body(new RestExceptionMessage(HttpStatus.OK, "Department deleted!"));
     }
