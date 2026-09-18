@@ -5,6 +5,7 @@ import br.com.josecarlosn.bank_ticket_service.dto.response.DepartmentResponseDTO
 import br.com.josecarlosn.bank_ticket_service.entity.Department;
 import br.com.josecarlosn.bank_ticket_service.infra.RestExceptionMessage;
 import br.com.josecarlosn.bank_ticket_service.service.DepartmentService;
+import jakarta.persistence.Id;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -27,5 +28,10 @@ public class DepartmentController {
     public ResponseEntity<?> createDepartment(@Valid @RequestBody DepartmentRequestDTO dto){
         service.create(dto);
         return ResponseEntity.status(HttpStatus.CREATED).body(new RestExceptionMessage(HttpStatus.CREATED, "Department created"));
+    }
+    @DeleteMapping("/{id}")
+    public ResponseEntity<?> deleteDepartment(@PathVariable Integer id){
+        service.delete(id);
+        return ResponseEntity.status(HttpStatus.OK).body(new RestExceptionMessage(HttpStatus.OK, "Department deleted!"));
     }
 }

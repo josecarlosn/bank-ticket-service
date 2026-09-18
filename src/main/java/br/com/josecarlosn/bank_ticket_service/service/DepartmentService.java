@@ -5,6 +5,7 @@ import br.com.josecarlosn.bank_ticket_service.dto.response.DepartmentResponseDTO
 import br.com.josecarlosn.bank_ticket_service.entity.Department;
 import br.com.josecarlosn.bank_ticket_service.exceptions.InvalidDepartmentException;
 import br.com.josecarlosn.bank_ticket_service.repository.DepartmentRepository;
+import br.com.josecarlosn.bank_ticket_service.repository.DeskRepository;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -14,7 +15,11 @@ import java.util.List;
 @Service
 public class DepartmentService {
     private final DepartmentRepository repository;
-    public DepartmentService(DepartmentRepository repository){this.repository = repository;}
+    private final DeskRepository deskRepository;
+
+    public DepartmentService(DepartmentRepository repository, DeskRepository deskRepository){this.repository = repository;
+        this.deskRepository = deskRepository;
+    }
 
     public List<DepartmentResponseDTO> listDepartment(){
         Sort sort = Sort.by(Sort.Direction.ASC, "name");
@@ -28,10 +33,17 @@ public class DepartmentService {
 
         Department department = new Department(dto.name(), dto.tag(), dto.priorityTag());
 
-
-
         repository.save(department);
         return listDepartment();
+    }
+    public void delete(Integer id){
+        if(!repository.existsById(id)){
+            throw new InvalidDepartmentException("Department doesn't exist.");
+        }
+        if(deskRepository.existsByDepartmentId(id)){
+            throw new InvalidDepartmentException("Cannot delete a department that has desks linked to it.");
+        }
+        repository.deleteById(id);
     }
 
 
