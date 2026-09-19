@@ -2,12 +2,14 @@ package br.com.josecarlosn.bank_ticket_service.service;
 
 import br.com.josecarlosn.bank_ticket_service.dto.request.DepartmentRequestDTO;
 import br.com.josecarlosn.bank_ticket_service.dto.response.DepartmentResponseDTO;
+import br.com.josecarlosn.bank_ticket_service.dto.update.DepartmentUpdateDTO;
 import br.com.josecarlosn.bank_ticket_service.entity.Department;
 import br.com.josecarlosn.bank_ticket_service.exceptions.InvalidDepartmentException;
 import br.com.josecarlosn.bank_ticket_service.repository.DepartmentRepository;
 import br.com.josecarlosn.bank_ticket_service.repository.DeskRepository;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.RequestBody;
 
 import java.util.List;
@@ -40,6 +42,22 @@ public class DepartmentService {
         repository.save(department);
         return listActiveDepartment();
     }
+
+    @Transactional
+    public DepartmentResponseDTO update(Integer id, DepartmentUpdateDTO dto) {
+        Department department = repository.findById(id).orElseThrow(() -> new InvalidDepartmentException("Department not found!"));
+        if (dto.name() != null) {
+            department.setName(dto.name());
+        }
+        if (dto.tag() != null) {
+            department.setTag(dto.tag());
+        }
+        if (dto.priorityTag() != null) {
+            department.setPriorityTag(dto.priorityTag());
+        }
+        return new DepartmentResponseDTO(department);
+    }
+
     public void delete(Integer id){
         if(!repository.existsById(id)){
             throw new InvalidDepartmentException("Department doesn't exist.");

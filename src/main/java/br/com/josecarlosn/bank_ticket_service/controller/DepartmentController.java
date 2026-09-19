@@ -2,6 +2,7 @@ package br.com.josecarlosn.bank_ticket_service.controller;
 
 import br.com.josecarlosn.bank_ticket_service.dto.request.DepartmentRequestDTO;
 import br.com.josecarlosn.bank_ticket_service.dto.response.DepartmentResponseDTO;
+import br.com.josecarlosn.bank_ticket_service.dto.update.DepartmentUpdateDTO;
 import br.com.josecarlosn.bank_ticket_service.entity.Department;
 import br.com.josecarlosn.bank_ticket_service.infra.RestExceptionMessage;
 import br.com.josecarlosn.bank_ticket_service.service.DepartmentService;
@@ -43,6 +44,11 @@ public class DepartmentController {
         service.deactivate(id);
         return ResponseEntity.status(HttpStatus.OK).body(new RestExceptionMessage(HttpStatus.OK, "Department disabled."));
     };
+
+    @PatchMapping("/update/{id}")
+    public ResponseEntity<DepartmentResponseDTO> update(@PathVariable Integer id, @Valid @RequestBody DepartmentUpdateDTO dto){
+        return ResponseEntity.ok(service.update(id, dto));
+    }
 
     @DeleteMapping("/{id}")
     public ResponseEntity<RestExceptionMessage> deleteDepartment(@PathVariable Integer id){
