@@ -48,4 +48,10 @@ public class TicketCountService {
         Optional<TicketCount> ticketCount = ticketCountRepository.findByDepartmentIdAndHavePriorityAndDate(dto.departmentId(), dto.havePriority(), today);
         return ticketCount.map(count -> {return count.getLastNumber() + 1;}).orElseGet(() -> {return 1;});
     }
+    public void delete(Integer id){
+        if (!ticketCountRepository.existsById(id)){
+            throw new TicketCountException("Cannot delete an TicketCount that doesn't exist.");
+        }
+        ticketCountRepository.deleteById(id);
+    }
 }
