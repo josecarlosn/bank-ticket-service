@@ -23,6 +23,10 @@ public class DepartmentController {
     public List<DepartmentResponseDTO> listActiveDepartments(){
         return service.listActiveDepartment();
     }
+    @GetMapping("/all")
+    public List<DepartmentResponseDTO> listAllDepartments(){
+        return service.listAllDepartments();
+    }
 
     @PostMapping
     public ResponseEntity<RestExceptionMessage> createDepartment(@Valid @RequestBody DepartmentRequestDTO dto){

@@ -25,6 +25,10 @@ public class DepartmentService {
         Sort sort = Sort.by(Sort.Direction.ASC, "name");
         return repository.findByIsActiveTrue(sort).stream().map(DepartmentResponseDTO::new).toList();
     }
+    public List<DepartmentResponseDTO> listAllDepartments(){
+        Sort sort = Sort.by(Sort.Direction.ASC, "name");
+        return repository.findAll(sort).stream().map(DepartmentResponseDTO :: new).toList();
+    }
 
     public List<DepartmentResponseDTO> create(DepartmentRequestDTO dto){
         if(repository.existsByName(dto.name())){throw new InvalidDepartmentException("Department's name already exists!");}
