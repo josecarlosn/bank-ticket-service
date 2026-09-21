@@ -65,7 +65,6 @@ public class DepartmentService {
         if(deskRepository.existsByDepartmentId(id)){
             throw new InvalidDepartmentException("Cannot delete a department that has desks linked to it.");
         }
-
         repository.deleteById(id);
     }
     public void activate(Integer id){
