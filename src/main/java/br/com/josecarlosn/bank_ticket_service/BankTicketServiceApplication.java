@@ -28,9 +28,5 @@ public class BankTicketServiceApplication {
 	│              BANK TICKET SERVICE                │
 	╰─────────────────────────────────────────────────╯
 	""");
-
-
 	}
-
-
 }
