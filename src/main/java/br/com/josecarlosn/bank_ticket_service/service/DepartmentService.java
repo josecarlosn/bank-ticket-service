@@ -4,6 +4,7 @@ import br.com.josecarlosn.bank_ticket_service.dto.request.DepartmentRequestDTO;
 import br.com.josecarlosn.bank_ticket_service.dto.response.DepartmentResponseDTO;
 import br.com.josecarlosn.bank_ticket_service.dto.update.DepartmentUpdateDTO;
 import br.com.josecarlosn.bank_ticket_service.entity.Department;
+import br.com.josecarlosn.bank_ticket_service.entity.Desk;
 import br.com.josecarlosn.bank_ticket_service.exceptions.InvalidDepartmentException;
 import br.com.josecarlosn.bank_ticket_service.repository.DepartmentRepository;
 import br.com.josecarlosn.bank_ticket_service.repository.DeskRepository;
@@ -67,14 +68,27 @@ public class DepartmentService {
         }
         repository.deleteById(id);
     }
+    @Transactional
     public void activate(Integer id){
         Department department = repository.findById(id).orElseThrow(() -> new InvalidDepartmentException("Department not found."));
+        List<Desk> deskList = deskRepository.findAllByDepartmentId(id);
+        for (Desk desk : deskList){
+            desk.activate();
+        }
         department.activate();
+        deskRepository.saveAll(deskList);
         repository.save(department);
     }
+    @Transactional
     public void deactivate(Integer id){
         Department department = repository.findById(id).orElseThrow(() -> new InvalidDepartmentException("Department not found."));
+        List<Desk> deskList = deskRepository.findAllByDepartmentId(id);
+        for (Desk desk : deskList){
+            desk.deactivate();
+        }
         department.deactivate();
+
+        deskRepository.saveAll(deskList);
         repository.save(department);
     }
 
